@@ -24,6 +24,8 @@ import { FilterPipe } from './pipe/filter.pipe';
 
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { CookieService } from 'ngx-cookie-service';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 export function HttpLoaderFactory(http: HttpClient): any {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -50,7 +52,9 @@ export function HttpLoaderFactory(http: HttpClient): any {
     }),
 
     FullComponent,
+    NgxSpinnerModule
   ],
+  providers:[CookieService],
   exports: [TablerIconsModule],
   bootstrap: [AppComponent],
 })

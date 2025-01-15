@@ -3,6 +3,7 @@ import {
   Output,
   EventEmitter,
   Input,
+  OnInit,
 } from '@angular/core';
 import { CoreService } from 'src/app/services/core.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,6 +15,7 @@ import { MaterialModule } from 'src/app/material.module';
 import { BrandingComponent } from '../../vertical/sidebar/branding.component';
 import { NgFor, NgForOf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 
 interface notifications {
   id: number;
@@ -50,7 +52,7 @@ interface quicklinks {
   imports: [RouterModule, TablerIconsModule, MaterialModule, BrandingComponent, NgFor],
   templateUrl: './header.component.html',
 })
-export class AppHorizontalHeaderComponent {
+export class AppHorizontalHeaderComponent implements OnInit {
    @Input() showToggle = true;
   @Input() toggleChecked = false;
   @Output() toggleMobileNav = new EventEmitter<void>();
@@ -90,12 +92,19 @@ export class AppHorizontalHeaderComponent {
     },
   ];
 
+  username : string = " ";
+
   constructor(
     private vsidenav: CoreService,
     public dialog: MatDialog,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private authServicie: AuthService
   ) {
     translate.setDefaultLang('en');
+  }
+
+  ngOnInit(): void {
+    this.username = this.authServicie.getUsername()!;
   }
 
   openDialog() {
@@ -104,6 +113,10 @@ export class AppHorizontalHeaderComponent {
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
     });
+  }
+
+  logOut() {
+    this.authServicie.logOutUser();
   }
 
   changeLanguage(lang: any): void {

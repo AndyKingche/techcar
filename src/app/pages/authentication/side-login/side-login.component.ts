@@ -7,20 +7,24 @@ import { MaterialModule } from 'src/app/material.module';
 import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
+import { NgxSpinnerModule, NgxSpinnerService } from "ngx-spinner";
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-side-login',
   standalone: true,
-  imports: [RouterModule, MaterialModule, NgIf, FormsModule, ReactiveFormsModule],
+  imports: [RouterModule, MaterialModule, NgIf, FormsModule, ReactiveFormsModule, NgxSpinnerModule],
   templateUrl: './side-login.component.html',
 })
 export class AppSideLoginComponent {
   options = this.settings.getOptions();
 
-  constructor(private settings: CoreService, private router: Router) {}
+  constructor(private settings: CoreService, private router: Router, 
+    private auth_service: AuthService, private spinner: NgxSpinnerService) {}
 
   form = new FormGroup({
-    uname: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    username: new FormControl('', [Validators.required, Validators.minLength(6)]),
     password: new FormControl('', [Validators.required]),
   });
 
@@ -28,8 +32,18 @@ export class AppSideLoginComponent {
     return this.form.controls;
   }
 
-  submit() {
-    // console.log(this.form.value);
-    this.router.navigate(['/dashboards/dashboard1']);
+  async submit() {
+
+    this.spinner.show();
+
+    const TOKEN : any = await firstValueFrom(this.auth_service.loginUser(this.form.value))
+
+    if(TOKEN != null){
+      this.auth_service.setToken(TOKEN.token);
+      this.auth_service.checkRolUser(this.form.value.username!, this.spinner);
+    }else{
+      this.spinner.hide();
+    } 
+
   }
 }
