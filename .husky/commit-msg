@@ -1,2 +1,0 @@
-echo '#!/bin/sh' > .husky/commit-msg
-echo 'npx --no-install commitlint --edit "$1"' >> .husky/commit-msg
