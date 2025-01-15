@@ -88,20 +88,20 @@
                 class="w-100"
                 color="primary"
               >
-                <input matInput formControlName="uname" />
+                <input matInput formControlName="username" />
                 <mat-hint
-                  *ngIf="f['uname'].touched && f['uname'].invalid"
+                  *ngIf="f['username'].touched && f['username'].invalid"
                   class="m-b-16 error-msg"
                 >
                   <div
                     class="text-error"
-                    *ngIf="f['uname'].errors && f['uname'].errors['required']"
+                    *ngIf="f['username'].errors && f['username'].errors['required']"
                   >
                     Name is required.
                   </div>
                   <div
                     class="text-error"
-                    *ngIf="f['uname'].errors && f['uname'].errors['minlength']"
+                    *ngIf="f['username'].errors && f['username'].errors['minlength']"
                   >
                     Name should be 6 character.
                   </div>
@@ -163,3 +163,6 @@
     </div>
   </div>
 </div>
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "ball-newton-cradle" [fullScreen] = "true">
+  <p style="color: white" > Loading... </p>
+</ngx-spinner>

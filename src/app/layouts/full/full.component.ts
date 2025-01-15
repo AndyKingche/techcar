@@ -20,6 +20,7 @@ import { AppHorizontalHeaderComponent } from './horizontal/header/header.compone
 import { AppHorizontalSidebarComponent } from './horizontal/sidebar/sidebar.component';
 import { AppBreadcrumbComponent } from './shared/breadcrumb/breadcrumb.component';
 import { CustomizerComponent } from './shared/customizer/customizer.component';
+import { AuthService } from 'src/app/services/auth.service';
 
 const MOBILE_VIEW = 'screen and (max-width: 768px)';
 const TABLET_VIEW = 'screen and (min-width: 769px) and (max-width: 1024px)';
@@ -86,6 +87,7 @@ export class FullComponent implements OnInit {
     return this.resView;
   }
 
+  username: string = " ";
   // for mobile app sidebar
   apps: apps[] = [
     {
@@ -195,6 +197,7 @@ export class FullComponent implements OnInit {
     private router: Router,
     private breakpointObserver: BreakpointObserver,
     private navService: NavService,
+    private authService: AuthService
   ) {
     this.htmlElement = document.querySelector('html')!;
     this.layoutChangesSubscription = this.breakpointObserver
@@ -221,10 +224,19 @@ export class FullComponent implements OnInit {
       });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+
+    this.username = this.authService.getUsername()!;
+
+
+  }
 
   ngOnDestroy() {
     this.layoutChangesSubscription.unsubscribe();
+  }
+
+  logOut() {
+    this.authService.logOutUser();
   }
 
   toggleCollapsed() {

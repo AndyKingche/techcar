@@ -12,6 +12,9 @@ const routes: Routes = [
 
     path:'admin',
     component:BlankComponent,
+    data:{
+      title: 'Bienvenido | Admin'
+    },
     children:[
       {
         path:'user',
